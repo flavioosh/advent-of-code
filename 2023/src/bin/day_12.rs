@@ -16,7 +16,7 @@ enum SpringCondition {
 }
 
 #[allow(dead_code)]
-fn conditions_to_str(input: &Vec<SpringCondition>) -> String {
+fn conditions_to_str(input: &[SpringCondition]) -> String {
     String::from_utf8(
         input
             .iter()
@@ -38,8 +38,8 @@ fn check(
     damaged_count: usize,
 ) -> usize {
     // If we run the function on empty values, we have found a match
-    if conditions.len() == 0
-        && condition_counts.len() == 0
+    if conditions.is_empty()
+        && condition_counts.is_empty()
         && working_count == 0
         && damaged_count == 0
     {
@@ -68,8 +68,12 @@ fn check(
             }
 
             let mut consumed_unknown_damaged = 0;
-            for i in 1..expected_contiguous_damaged_springs {
-                match conditions[i] {
+            for condition in conditions
+                .iter()
+                .take(expected_contiguous_damaged_springs)
+                .skip(1)
+            {
+                match condition {
                     SpringCondition::Working => {
                         // Not a match
                         return 0;
@@ -220,7 +224,7 @@ fn part_1() {
     let data = fs::read_to_string("res/day_12.txt").unwrap();
     let sum = get_variations(data);
 
-    println!("Part 1: {}", sum);
+    println!("Part 1: {sum}");
 }
 
 fn part_2() {
@@ -248,7 +252,7 @@ fn part_2() {
 
     let sum = get_variations(data);
 
-    println!("Part 2: {}", sum);
+    println!("Part 2: {sum}");
 }
 
 fn main() {

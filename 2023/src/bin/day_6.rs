@@ -26,7 +26,7 @@ fn part_1() {
         .map(|(i, time)| {
             let distance = distances[i];
 
-            let a = -1 as f64;
+            let a = -1f64;
             let b = time as f64;
             let c = -(distance as f64);
 
@@ -40,7 +40,7 @@ fn part_1() {
         })
         .product();
 
-    println!("Part 1: {}", accumulator);
+    println!("Part 1: {accumulator}");
 }
 
 fn part_2() {
@@ -63,19 +63,19 @@ fn part_2() {
 
     let mut wins = 0;
 
-    let a = -1 as f64;
+    let a = -1f64;
     let b = time as f64;
     let c = -(distance as f64 + 1.0);
 
     let x1 = (-b + (b.powf(2.0) - 4.0 * a * c).sqrt()) / 2.0 * a;
     let x2 = (-b - (b.powf(2.0) - 4.0 * a * c).sqrt()) / 2.0 * a;
 
-    let x1 = x1.floor() as usize;
+    let x1 = x1.ceil() as usize;
     let x2 = x2.ceil() as usize;
 
     wins += x2 - x1;
 
-    println!("Part 2: {}", wins);
+    println!("Part 2: {wins}");
 }
 
 fn main() {

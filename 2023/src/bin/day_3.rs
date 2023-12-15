@@ -127,7 +127,8 @@ fn main() {
                     if adjacent_gear.is_none() {
                         adjacent_gear = is_gear_adjacent(&grid, i, j);
                     }
-                    is_adjacent = is_adjacent || adjacent_gear.is_some() || is_symbol_adjacent(&grid, i, j);
+                    is_adjacent =
+                        is_adjacent || adjacent_gear.is_some() || is_symbol_adjacent(&grid, i, j);
                 }
                 _ => {
                     if is_number {
@@ -172,6 +173,6 @@ fn main() {
         }
     }
 
-    println!("Part 1: {}", sum_1);
-    println!("Part 2: {}", sum_2);
+    println!("Part 1: {sum_1}");
+    println!("Part 2: {sum_2}");
 }

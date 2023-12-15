@@ -24,6 +24,7 @@ type Grid = Vec<Vec<Pipe>>;
 type Position = (usize, usize);
 type Vector = (Position, Direction);
 
+#[allow(dead_code)]
 fn print_grid(
     grid: &Grid,
     highlighted_pipes: Option<&BTreeSet<Position>>,
@@ -50,15 +51,15 @@ fn print_grid(
             if is_inside {
                 highlight_start = "\x1b[0;34m";
             }
-            let c = match col {
-                &Pipe::NorthSouth => '┃',
-                &Pipe::EastWest => '━',
-                &Pipe::NorthEast => '┗',
-                &Pipe::NorthWest => '┛',
-                &Pipe::SouthWest => '┓',
-                &Pipe::SouthEast => '┏',
-                &Pipe::Start => 'S',
-                &Pipe::Ground => '.',
+            let c = match *col {
+                Pipe::NorthSouth => '┃',
+                Pipe::EastWest => '━',
+                Pipe::NorthEast => '┗',
+                Pipe::NorthWest => '┛',
+                Pipe::SouthWest => '┓',
+                Pipe::SouthEast => '┏',
+                Pipe::Start => 'S',
+                Pipe::Ground => '.',
             };
             let mut highlight_end = "";
             if is_highlighted || is_inside {
@@ -71,30 +72,30 @@ fn print_grid(
 }
 
 fn next_pipe(grid: &Grid, vector: Vector) -> Vector {
-    let pipe_segment = &grid[vector.0.1][vector.0.0];
+    let pipe_segment = &grid[vector.0 .1][vector.0 .0];
     match vector.1 {
         Direction::North => match pipe_segment {
-            Pipe::NorthSouth => ((vector.0.0, vector.0.1 + 1), Direction::North),
-            Pipe::NorthWest => ((vector.0.0 - 1, vector.0.1), Direction::East),
-            Pipe::NorthEast => ((vector.0.0 + 1, vector.0.1), Direction::West),
+            Pipe::NorthSouth => ((vector.0 .0, vector.0 .1 + 1), Direction::North),
+            Pipe::NorthWest => ((vector.0 .0 - 1, vector.0 .1), Direction::East),
+            Pipe::NorthEast => ((vector.0 .0 + 1, vector.0 .1), Direction::West),
             _ => panic!("Invalid north pipe connection at {:?}", vector.0),
         },
         Direction::South => match pipe_segment {
-            Pipe::NorthSouth => ((vector.0.0, vector.0.1 - 1), Direction::South),
-            Pipe::SouthWest => ((vector.0.0 - 1, vector.0.1), Direction::East),
-            Pipe::SouthEast => ((vector.0.0 + 1, vector.0.1), Direction::West),
+            Pipe::NorthSouth => ((vector.0 .0, vector.0 .1 - 1), Direction::South),
+            Pipe::SouthWest => ((vector.0 .0 - 1, vector.0 .1), Direction::East),
+            Pipe::SouthEast => ((vector.0 .0 + 1, vector.0 .1), Direction::West),
             _ => panic!("Invalid south pipe connection at {:?}", vector.0),
         },
         Direction::East => match pipe_segment {
-            Pipe::EastWest => ((vector.0.0 - 1, vector.0.1), Direction::East),
-            Pipe::NorthEast => ((vector.0.0, vector.0.1 - 1), Direction::South),
-            Pipe::SouthEast => ((vector.0.0, vector.0.1 + 1), Direction::North),
+            Pipe::EastWest => ((vector.0 .0 - 1, vector.0 .1), Direction::East),
+            Pipe::NorthEast => ((vector.0 .0, vector.0 .1 - 1), Direction::South),
+            Pipe::SouthEast => ((vector.0 .0, vector.0 .1 + 1), Direction::North),
             _ => panic!("Invalid east pipe connection at {:?}", vector.0),
         },
         Direction::West => match pipe_segment {
-            Pipe::EastWest => ((vector.0.0 + 1, vector.0.1), Direction::West),
-            Pipe::NorthWest => ((vector.0.0, vector.0.1 - 1), Direction::South),
-            Pipe::SouthWest => ((vector.0.0, vector.0.1 + 1), Direction::North),
+            Pipe::EastWest => ((vector.0 .0 + 1, vector.0 .1), Direction::West),
+            Pipe::NorthWest => ((vector.0 .0, vector.0 .1 - 1), Direction::South),
+            Pipe::SouthWest => ((vector.0 .0, vector.0 .1 + 1), Direction::North),
             _ => panic!("Invalid west pipe connection at {:?}", vector.0),
         },
     }
@@ -229,7 +230,7 @@ fn main() {
     }
 
     let mut inside_pipes: Vec<Position> = Vec::new();
-    for y in 0..grid.len() {
+    for (y, _) in grid.iter().enumerate() {
         let mut inside = false;
         let mut consuming_pipe = None;
         for x in 0..grid[y].len() {
@@ -257,8 +258,6 @@ fn main() {
         }
     }
 
-    println!("Part 1: {}", steps);
+    println!("Part 1: {steps}");
     println!("Part 2: {}", inside_pipes.len());
-
-    print_grid(&grid, Some(&pipes), Some(&inside_pipes));
 }

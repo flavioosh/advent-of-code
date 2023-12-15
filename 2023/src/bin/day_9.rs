@@ -19,7 +19,7 @@ fn part_1() {
                 .map(|reading| str::parse(reading).unwrap())
                 .collect();
             let mut differences: Vec<Vec<isize>> = vec![reading];
-            while differences.len() == 0 || differences.last().unwrap().iter().any(|d| *d != 0) {
+            while differences.is_empty() || differences.last().unwrap().iter().any(|d| *d != 0) {
                 differences.push(get_diffs(differences.last().unwrap()));
             }
             let next_value: isize = differences.iter().map(|step| step.last().unwrap()).sum();
@@ -27,7 +27,7 @@ fn part_1() {
         })
         .sum();
 
-    println!("Part 1: {:?}", result);
+    println!("Part 1: {result}");
 }
 
 fn part_2() {
@@ -42,7 +42,7 @@ fn part_2() {
                 .collect();
             reading.reverse();
             let mut differences: Vec<Vec<isize>> = vec![reading];
-            while differences.len() == 0 || differences.last().unwrap().iter().any(|d| *d != 0) {
+            while differences.is_empty() || differences.last().unwrap().iter().any(|d| *d != 0) {
                 differences.push(get_diffs(differences.last().unwrap()));
             }
             let next_value: isize = differences.iter().map(|step| step.last().unwrap()).sum();
@@ -50,7 +50,7 @@ fn part_2() {
         })
         .sum();
 
-    println!("Part 1: {:?}", result);
+    println!("Part 2: {result}");
 }
 
 fn main() {

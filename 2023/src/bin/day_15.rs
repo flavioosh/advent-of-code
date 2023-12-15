@@ -16,7 +16,7 @@ fn part_1() {
 
     let sum: usize = parts.map(|part| get_hash(part) as usize).sum();
 
-    println!("Part 1: {}", sum);
+    println!("Part 1: {sum}");
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -32,8 +32,7 @@ fn part_2() {
     let mut boxes = vec![Vec::new(); 256];
 
     for step in steps {
-        if step.ends_with('-') {
-            let label = &step[..step.len() - 1];
+        if let Some(label) = step.strip_suffix('-') {
             let hash = get_hash(label);
             if let Some(lens_index) = boxes[hash as usize]
                 .iter()
@@ -65,7 +64,7 @@ fn part_2() {
         }
     }
 
-    println!("Part 2: {}", sum);
+    println!("Part 2: {sum}");
 }
 
 fn main() {

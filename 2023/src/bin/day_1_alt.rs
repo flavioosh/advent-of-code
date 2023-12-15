@@ -18,7 +18,7 @@ fn part_1() {
         sum += first * 10 + last;
     }
 
-    println!("Part 1: {}", sum);
+    println!("Part 1: {sum}");
 }
 
 fn part_2() {
@@ -102,7 +102,7 @@ fn part_2() {
         })
         .sum();
 
-    println!("Part 2: {}", sum);
+    println!("Part 2: {sum}");
 }
 
 fn main() {

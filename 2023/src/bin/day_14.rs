@@ -9,6 +9,7 @@ enum Rock {
 
 type Grid = Vec<Vec<Rock>>;
 
+#[allow(dead_code)]
 fn draw_grid(grid: &Grid) {
     for row in grid.iter() {
         for col in row.iter() {
@@ -40,7 +41,6 @@ fn part_1() {
         .collect();
 
     let rotated_grid: Grid = (0..grid[0].len())
-        .into_iter()
         .map(|y| grid.iter().map(|x| x[y]).collect())
         .collect();
 
@@ -48,20 +48,18 @@ fn part_1() {
     for col in rotated_grid {
         let mut new_col: Vec<Rock> = col
             .split(|rock| rock == &Rock::Cube)
-            .map(|rocks| {
+            .flat_map(|rocks| {
                 let mut rocks = rocks.to_vec();
                 rocks.sort();
                 rocks.push(Rock::Cube);
                 rocks
             })
-            .flatten()
             .collect();
         new_col.pop();
         ordered_rotated_grid.push(new_col);
     }
 
     let ordered_grid: Grid = (0..ordered_rotated_grid[0].len())
-        .into_iter()
         .map(|y| ordered_rotated_grid.iter().map(|x| x[y]).collect())
         .collect();
 
@@ -70,12 +68,11 @@ fn part_1() {
         sum += row.iter().filter(|rock| rock == &&Rock::Round).count() * (i + 1);
     }
 
-    println!("Part 1: {:?}", sum);
+    println!("Part 1: {sum}");
 }
 
 fn flip_grid(grid: Grid) -> Grid {
     (0..grid[0].len())
-        .into_iter()
         .map(|y| grid.iter().map(|x| x[y]).collect())
         .collect()
 }
@@ -85,13 +82,12 @@ fn order_grid(grid: Grid) -> Grid {
     for col in grid {
         let mut new_col: Vec<Rock> = col
             .split(|rock| rock == &Rock::Cube)
-            .map(|rocks| {
+            .flat_map(|rocks| {
                 let mut rocks = rocks.to_vec();
                 rocks.sort();
                 rocks.push(Rock::Cube);
                 rocks
             })
-            .flatten()
             .collect();
         new_col.pop();
         ordered_grid.push(new_col);
@@ -105,13 +101,12 @@ fn reverse_grid(grid: Grid) -> Grid {
         col.reverse();
         let mut new_col: Vec<Rock> = col
             .split(|rock| rock == &Rock::Cube)
-            .map(|rocks| {
+            .flat_map(|rocks| {
                 let mut rocks = rocks.to_vec();
                 rocks.sort();
                 rocks.push(Rock::Cube);
                 rocks
             })
-            .flatten()
             .collect();
         new_col.pop();
         new_col.reverse();
@@ -151,7 +146,6 @@ fn part_2() {
         grid = flip_grid(grid);
         grid = reverse_grid(grid);
 
-
         i += 1;
         if !cycle_detected {
             if let Some(cycle) = cache.get(&grid) {
@@ -173,7 +167,7 @@ fn part_2() {
         sum += row.iter().filter(|rock| rock == &&Rock::Round).count() * (i + 1);
     }
 
-    println!("Part 2: {:?}", sum);
+    println!("Part 2: {sum}");
 }
 
 fn main() {

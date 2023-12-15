@@ -49,15 +49,15 @@ fn main() {
             let start_x = galaxy_1.0.min(galaxy_2.0);
             let start_y = galaxy_1.1.min(galaxy_2.1);
 
-            let x_diff = (galaxy_1.0 as isize - galaxy_2.0 as isize).abs() as usize;
-            let y_diff = (galaxy_1.1 as isize - galaxy_2.1 as isize).abs() as usize;
+            let x_diff = (galaxy_1.0 as isize - galaxy_2.0 as isize).unsigned_abs();
+            let y_diff = (galaxy_1.1 as isize - galaxy_2.1 as isize).unsigned_abs();
 
             let x_expanses: usize = empty_columns[start_x..start_x + x_diff]
-                .into_iter()
+                .iter()
                 .filter(|empty| **empty)
                 .count();
             let y_expanses: usize = empty_rows[start_y..start_y + y_diff]
-                .into_iter()
+                .iter()
                 .filter(|empty| **empty)
                 .count();
 
@@ -70,6 +70,6 @@ fn main() {
         }
     }
 
-    println!("Part 1: {}", accumulator_1);
-    println!("Part 2: {}", accumulator_2);
+    println!("Part 1: {accumulator_1}");
+    println!("Part 2: {accumulator_2}");
 }

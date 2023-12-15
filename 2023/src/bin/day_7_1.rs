@@ -28,7 +28,7 @@ impl From<&str> for Hand {
         let mut cards = [0u8; 5];
         for (i, card) in hand.chars().enumerate() {
             let card = match card {
-                x if  x.is_ascii_digit() => card.to_digit(10).unwrap() as u8,
+                x if x.is_ascii_digit() => card.to_digit(10).unwrap() as u8,
                 'T' => 10,
                 'J' => 11,
                 'Q' => 12,
@@ -41,8 +41,7 @@ impl From<&str> for Hand {
         }
 
         let mut hand_type = HandType::HighCard;
-        for i in 2..15 {
-            let count = card_counts[i];
+        for &count in card_counts.iter().skip(2) {
             if count == 5 {
                 hand_type = HandType::FiveOfAKind;
                 break;
@@ -91,7 +90,7 @@ impl Ord for Hand {
             }
         }
 
-        return std::cmp::Ordering::Equal;
+        std::cmp::Ordering::Equal
     }
 }
 
@@ -114,6 +113,5 @@ fn main() {
         sum += (i + 1) as u32 * hand.bid;
     }
 
-    println!("Part 1: {:?}", sum);
+    println!("Part 1: {sum}");
 }
-

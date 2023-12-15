@@ -1,4 +1,4 @@
-use std::{str, collections::BTreeMap, fs};
+use std::{collections::BTreeMap, fs, str};
 
 #[derive(Debug)]
 struct Node {
@@ -21,6 +21,33 @@ impl From<&str> for Node {
             directions: [left, right],
         }
     }
+}
+
+#[allow(dead_code)]
+fn to_chars(input: usize) -> String {
+    format!(
+        "{}{}{}",
+        (input >> 16) as u8 as char,
+        (input >> 8 & 0xFF) as u8 as char,
+        (input & 0xFF) as u8 as char
+    )
+}
+
+fn gcd(a: usize, b: usize) -> usize {
+    if a == 0 {
+        return b;
+    }
+    gcd(b % a, a)
+}
+
+fn lcm(input: Vec<usize>) -> usize {
+    let mut result = input[0];
+
+    for i in input {
+        result = (i * result) / gcd(i, result);
+    }
+
+    result
 }
 
 fn part_1() {
@@ -54,7 +81,8 @@ fn part_1() {
     let mut current_location = starting_location;
     let mut steps: usize = 0;
     while current_location != ending_location {
-        current_location = map.get(&current_location).unwrap()[instructions[instruction_index] as usize];
+        current_location =
+            map.get(&current_location).unwrap()[instructions[instruction_index] as usize];
         instruction_index += 1;
         if instruction_index == instructions.len() {
             instruction_index = 0;
@@ -62,7 +90,7 @@ fn part_1() {
         steps += 1;
     }
 
-    println!("Part 1: {}", steps);
+    println!("Part 1: {steps}");
 }
 
 fn part_2() {
@@ -104,20 +132,15 @@ fn part_2() {
     let mut current_locations = starting_nodes.clone();
     let mut finished = vec![0; current_locations.len()];
 
-    print!("Start: ");
-    for l in current_locations.iter() {
-        print!("{}, ", to_chars(*l));
-    }
-    println!();
     while finished.iter().any(|f| *f == 0) {
         for i in 0..current_locations.len() {
             if finished[i] != 0 {
                 continue;
             }
-            current_locations[i] = map.get(&current_locations[i]).unwrap()[instructions[instruction_index] as usize];
+            current_locations[i] =
+                map.get(&current_locations[i]).unwrap()[instructions[instruction_index] as usize];
             if current_locations[i] & ('Z' as usize) == 'Z' as usize {
                 finished[i] = steps + 1;
-                println!("Hit Z ({}) for {} as step {}", to_chars(current_locations[i]), to_chars(starting_nodes[i]), steps);
             }
         }
         instruction_index += 1;
@@ -128,27 +151,6 @@ fn part_2() {
     }
 
     println!("Part 2: {}", lcm(finished));
-}
-
-fn to_chars(input: usize) -> String {
-    format!("{}{}{}", (input >> 16) as u8 as char, (input >> 8 & 0xFF) as u8 as char, (input & 0xFF) as u8 as char)
-}
-
-fn gcd(a: usize, b: usize) -> usize {
-    if a == 0 {
-        return b;
-    }
-    return gcd(b % a, a);
-}
-
-fn lcm(input: Vec<usize>) -> usize {
-    let mut result = input[0];
-
-    for i in input {
-        result = (i * result) / gcd(i, result);
-    }
-
-    result
 }
 
 fn main() {

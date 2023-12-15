@@ -70,7 +70,9 @@ fn part_1() {
         sources = destinations.clone();
     }
 
-    println!("Part 1: {:?}", sources.iter().min().unwrap());
+    let min = sources.iter().min().unwrap();
+
+    println!("Part 1: {min}");
 }
 
 fn part_2() {
@@ -91,10 +93,9 @@ fn part_2() {
     let mut threads = Vec::new();
 
     for seed_range in seed_ranges {
-        let seed_range = seed_range.clone();
         let maps = maps.clone();
         let result = thread::spawn(move || {
-            let result = (seed_range.0..(seed_range.0 + seed_range.1))
+            (seed_range.0..(seed_range.0 + seed_range.1))
                 .map(|seed| {
                     let mut source: usize = seed;
                     let mut destination = usize::MAX;
@@ -128,8 +129,7 @@ fn part_2() {
                     source
                 })
                 .min()
-                .unwrap();
-            result
+                .unwrap()
         });
         threads.push(result);
     }
@@ -140,7 +140,7 @@ fn part_2() {
         .min()
         .unwrap();
 
-    println!("Part 2: {}", min);
+    println!("Part 2: {min}");
 }
 
 fn main() {

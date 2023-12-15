@@ -60,7 +60,6 @@ fn main() {
             // Check for horizontal symmetry
             // Rotate pattern
             let rotated_pattern: Pattern = (0..pattern[0].len())
-                .into_iter()
                 .map(|y| pattern.iter().map(|x| x[y]).collect())
                 .collect();
 
@@ -93,7 +92,6 @@ fn main() {
                 // Check for horizontal symmetry
                 // Rotate pattern
                 let rotated_pattern: Pattern = (0..pattern[0].len())
-                    .into_iter()
                     .map(|y| pattern.iter().map(|x| x[y]).collect())
                     .collect();
 
@@ -115,6 +113,6 @@ fn main() {
         }
     }
 
-    println!("Part 1: {}", sum_1);
-    println!("Part 2: {}", sum_2);
+    println!("Part 1: {sum_1}");
+    println!("Part 2: {sum_2}");
 }

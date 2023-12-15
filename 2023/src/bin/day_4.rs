@@ -1,4 +1,4 @@
-use std::{fs, collections::HashSet};
+use std::{collections::HashSet, fs};
 
 fn main() {
     let data = fs::read_to_string("res/day_4.txt").unwrap();
@@ -20,7 +20,7 @@ fn main() {
         let winning: HashSet<&str> = HashSet::from_iter(winning);
         let numbers: HashSet<&str> = HashSet::from_iter(numbers);
 
-        let result: Vec<&&str> = winning.intersection(&numbers).into_iter().collect();
+        let result: Vec<&&str> = winning.intersection(&numbers).collect();
         let matches = result.len();
 
         if matches > 0 {
@@ -35,6 +35,6 @@ fn main() {
         sum_2 += wins[i];
     }
 
-    println!("Part 1: {}", sum_1);
-    println!("Part 2: {}", sum_2);
+    println!("Part 1: {sum_1}");
+    println!("Part 2: {sum_2}");
 }

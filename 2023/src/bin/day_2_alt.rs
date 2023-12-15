@@ -71,7 +71,7 @@ fn part_1() {
         })
         .sum();
 
-    println!("Part 1: {:?}", sum);
+    println!("Part 1: {sum}");
 }
 
 fn part_2() {
@@ -116,7 +116,7 @@ fn part_2() {
         })
         .sum();
 
-    println!("Part 1: {:?}", sum);
+    println!("Part 1: {sum}");
 }
 
 fn main() {

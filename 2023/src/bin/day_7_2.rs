@@ -45,8 +45,7 @@ impl From<&str> for Hand {
             5 | 4 => HandType::FiveOfAKind,
             3 => {
                 let mut best_hand_type = HandType::FourOfAKind;
-                for i in 2..14 {
-                    let count = card_counts[i];
+                for &count in card_counts.iter().take(14).skip(2) {
                     if count == 2 {
                         best_hand_type = HandType::FiveOfAKind;
                         break;
@@ -56,8 +55,7 @@ impl From<&str> for Hand {
             }
             2 => {
                 let mut best_hand_type = HandType::ThreeOfAKind;
-                for i in 2..14 {
-                    let count = card_counts[i];
+                for &count in card_counts.iter().take(14).skip(2) {
                     if count == 3 {
                         best_hand_type = HandType::FiveOfAKind;
                         break;
@@ -72,8 +70,7 @@ impl From<&str> for Hand {
             }
             1 => {
                 let mut best_hand_type = HandType::OnePair;
-                for i in 2..14 {
-                    let count = card_counts[i];
+                for &count in card_counts.iter().take(14).skip(2) {
                     if count == 4 {
                         best_hand_type = HandType::FiveOfAKind;
                         break;
@@ -92,8 +89,7 @@ impl From<&str> for Hand {
             }
             _ => {
                 let mut best_hand_type = HandType::HighCard;
-                for i in 2..14 {
-                    let count = card_counts[i];
+                for &count in card_counts.iter().take(14).skip(2) {
                     if count == 5 {
                         best_hand_type = HandType::FiveOfAKind;
                         break;
@@ -145,7 +141,7 @@ impl Ord for Hand {
             }
         }
 
-        return std::cmp::Ordering::Equal;
+        std::cmp::Ordering::Equal
     }
 }
 
@@ -168,5 +164,5 @@ fn main() {
         sum += (i + 1) as u32 * hand.bid;
     }
 
-    println!("Part 1: {:?}", sum);
+    println!("Part 2: {}", sum);
 }
