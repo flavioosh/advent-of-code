@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fs};
+use std::{collections::HashSet, fs, thread};
 
 #[derive(Debug, Clone, Copy)]
 enum CellType {
@@ -202,61 +202,71 @@ fn part_2() {
 
     let grid = parse_grid(&data);
 
-    let mut highest_energized_value = 0;
+    let mut threads = Vec::with_capacity(grid.len() + grid[0].len());
 
     for (x, _) in grid[0].iter().enumerate() {
-        let north_run = run(
-            grid.clone(),
-            Vector {
-                position: (x, grid.len() - 1),
-                direction: Direction::North,
-            },
-        );
+        let grid = grid.clone();
+        let thread = thread::spawn(move || {
+            let north_run = run(
+                grid.clone(),
+                Vector {
+                    position: (x, grid.len() - 1),
+                    direction: Direction::North,
+                },
+            );
 
-        if north_run > highest_energized_value {
-            highest_energized_value = north_run;
-        }
+            let south_run = run(
+                grid.clone(),
+                Vector {
+                    position: (x, 0),
+                    direction: Direction::South,
+                },
+            );
 
-        let south_run = run(
-            grid.clone(),
-            Vector {
-                position: (x, 0),
-                direction: Direction::South,
-            },
-        );
+            if south_run > north_run {
+                return south_run;
+            }
 
-        if south_run > highest_energized_value {
-            highest_energized_value = south_run;
-        }
+            north_run
+        });
+        threads.push(thread);
     }
 
     for (y, _) in grid.iter().enumerate() {
-        let east_run = run(
-            grid.clone(),
-            Vector {
-                position: (0, y),
-                direction: Direction::East,
-            },
-        );
+        let grid = grid.clone();
+        let thread = thread::spawn(move || {
+            let east_run = run(
+                grid.clone(),
+                Vector {
+                    position: (0, y),
+                    direction: Direction::East,
+                },
+            );
 
-        if east_run > highest_energized_value {
-            highest_energized_value = east_run;
-        }
+            let west_run = run(
+                grid.clone(),
+                Vector {
+                    position: (grid[0].len() - 1, y),
+                    direction: Direction::West,
+                },
+            );
 
-        let west_run = run(
-            grid.clone(),
-            Vector {
-                position: (grid[0].len() - 1, y),
-                direction: Direction::West,
-            },
-        );
+            if west_run > east_run {
+                return west_run;
+            }
 
-        if west_run > highest_energized_value {
-            highest_energized_value = west_run;
-        }
+            east_run
+        });
+        threads.push(thread);
     }
 
-    println!("Part 2: {highest_energized_value}");
+    let max_energized = threads
+        .into_iter()
+        .map(|thread| thread.join().unwrap())
+        .max()
+        .unwrap();
+
+    println!("Part 2: {max_energized}");
 }
 
 fn main() {
